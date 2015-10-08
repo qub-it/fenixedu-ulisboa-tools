@@ -75,7 +75,7 @@ public class FenixEDUBaseController {
     // http://stackoverflow.com/questions/3320674/spring-how-do-i-inject-an-httpservletrequest-into-a-request-scoped-bean
     // http://stackoverflow.com/questions/28638962/autowiring-httpservletrequest-in-spring-controller
     @Autowired
-    private HttpServletRequest request;
+    protected HttpServletRequest request;
 
     // The list of INFO messages that can be showed on View
     protected void addInfoMessage(String message, Model model) {
@@ -144,7 +144,9 @@ public class FenixEDUBaseController {
     public void initBinder(WebDataBinder binder) {
         GenericConversionService conversionService = (GenericConversionService) binder.getConversionService();
         if (!conversionService.canConvert(String.class, IBean.class)) {
-            conversionService.addConverter(new BeanConverterService());
+            GsonBuilder builder = new GsonBuilder();
+            registerTypeAdapters(builder);
+            conversionService.addConverter(new BeanConverterService(builder));
         }
         conversionService.addConverter(new CountryConverterService());
         conversionService.addConverter(new DistrictConverterService());
@@ -152,13 +154,17 @@ public class FenixEDUBaseController {
 
     }
 
-    protected String getBeanJson(IBean bean) {
-        GsonBuilder builder = new GsonBuilder();
+    protected void registerTypeAdapters(GsonBuilder builder) {
         builder.registerTypeAdapter(LocalizedString.class, new LocalizedStringAdapter());
         builder.registerTypeAdapter(Country.class, new CountryAdapter());
         builder.registerTypeAdapter(District.class, new DistrictAdapter());
         builder.registerTypeAdapter(Municipality.class, new MunicipalityAdapter());
         builder.registerTypeHierarchyAdapter(DomainObject.class, new DomainObjectAdapter());
+    }
+
+    protected String getBeanJson(IBean bean) {
+        GsonBuilder builder = new GsonBuilder();
+        registerTypeAdapters(builder);
         Gson gson = Converters.registerAll(builder).create();
 
         // CREATING JSON TREE TO ADD CLASSNAME ATTRIBUTE MUST DO THIS AUTOMAGICALLY
