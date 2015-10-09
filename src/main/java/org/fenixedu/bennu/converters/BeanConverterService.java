@@ -31,19 +31,8 @@ import java.util.Collections;
 import java.util.Set;
 
 import org.fenixedu.bennu.IBean;
-import org.fenixedu.bennu.adapters.CountryAdapter;
-import org.fenixedu.bennu.adapters.DistrictAdapter;
-import org.fenixedu.bennu.adapters.DomainObjectAdapter;
-import org.fenixedu.bennu.adapters.LocalizedStringAdapter;
-import org.fenixedu.bennu.adapters.MunicipalityAdapter;
-import org.fenixedu.commons.i18n.LocalizedString;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
-
-import pt.ist.fenixframework.DomainObject;
-import pt.ist.standards.geographic.Country;
-import pt.ist.standards.geographic.District;
-import pt.ist.standards.geographic.Municipality;
 
 import com.fatboyindustrial.gsonjodatime.Converters;
 import com.google.gson.Gson;
@@ -53,6 +42,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 public class BeanConverterService implements ConditionalGenericConverter {
+
+    private GsonBuilder builder;
+
+    public BeanConverterService(GsonBuilder builder) {
+        this.builder = builder;
+    }
 
     @Override
     public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
@@ -98,14 +93,7 @@ public class BeanConverterService implements ConditionalGenericConverter {
         Class beanObjectClass;
         try {
             beanObjectClass = Class.forName(className);
-            GsonBuilder builder = new GsonBuilder();
-            builder.registerTypeAdapter(LocalizedString.class, new LocalizedStringAdapter());
-            builder.registerTypeHierarchyAdapter(DomainObject.class, new DomainObjectAdapter());
-            builder.registerTypeAdapter(Country.class, new CountryAdapter());
-            builder.registerTypeAdapter(District.class, new DistrictAdapter());
-            builder.registerTypeAdapter(Municipality.class, new MunicipalityAdapter());
-            builder = Converters.registerAll(builder);
-            Gson gson = builder.create();
+            Gson gson = Converters.registerAll(builder).create();
             Object beanObject = gson.fromJson(jsonElement, beanObjectClass);
             //throws ClassCastException if not required domain type
             return targetType.getType().cast(beanObject);
