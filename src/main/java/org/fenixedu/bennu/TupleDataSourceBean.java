@@ -28,6 +28,8 @@ package org.fenixedu.bennu;
 
 import java.util.Comparator;
 
+import org.fenixedu.commons.StringNormalizer;
+
 public class TupleDataSourceBean implements IBean {
 
     public static final Comparator<TupleDataSourceBean> COMPARE_BY_TEXT = new Comparator<TupleDataSourceBean>() {
@@ -38,19 +40,21 @@ public class TupleDataSourceBean implements IBean {
             return c != 0 ? c : o1.getId().compareTo(o2.getId());
         }
     };
-    
+
     private String id;
     private String text;
+    private String normalizedText;
 
     public TupleDataSourceBean() {
-        
+
     }
-    
+
     public TupleDataSourceBean(final String id, final String text) {
         this.id = id;
         this.text = text;
+        this.normalizedText = StringNormalizer.normalize(text);
     }
-    
+
     public String getId() {
         return id;
     }
@@ -65,5 +69,14 @@ public class TupleDataSourceBean implements IBean {
 
     public void setText(String text) {
         this.text = text;
+        this.normalizedText = StringNormalizer.normalize(text);
+    }
+
+    public String getNormalizedText() {
+        return normalizedText;
+    }
+
+    public void setNormalizedText(String normalizedText) {
+        this.normalizedText = normalizedText;
     }
 }
