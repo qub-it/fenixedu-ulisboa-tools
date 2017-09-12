@@ -1,6 +1,6 @@
 /**
- * This file was created by Quorum Born IT <http://www.qub-it.com/> and its 
- * copyright terms are bind to the legal agreement regulating the FenixEdu@ULisboa 
+ * This file was created by Quorum Born IT <http://www.qub-it.com/> and its
+ * copyright terms are bind to the legal agreement regulating the FenixEdu@ULisboa
  * software development project between Quorum Born IT and Serviços Partilhados da
  * Universidade de Lisboa:
  *  - Copyright © 2015 Quorum Born IT (until any Go-Live phase)
@@ -8,7 +8,7 @@
  *
  * Contributors: ricardo.pedro@qub-it.com, anil.mamede@qub-it.com
  *
- * 
+ *
  * This file is part of FenixEdu Treasury.
  *
  * FenixEdu Treasury is free software: you can redistribute it and/or modify
@@ -40,26 +40,32 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.google.gson.JsonSyntaxException;
 
 /**
  * GSON serialiser/deserialiser for converting LocalizedString objects.
  */
 public class LocalizedStringAdapter implements JsonSerializer<LocalizedString>, JsonDeserializer<LocalizedString> {
     @Override
-    public JsonElement serialize(LocalizedString src, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(final LocalizedString src, final Type typeOfSrc, final JsonSerializationContext context) {
 
         return src.json();
     }
 
     @Override
-    public LocalizedString deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+    public LocalizedString deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context)
             throws JsonParseException {
         if (json instanceof JsonArray) {
             return LocalizedString.fromJson(json);
         } else {
-            JsonObject parsed =
-                    new JsonParser().parse(json.toString().replace("\\", "").replace("\"{", "{").replace("}\"", "}"))
-                            .getAsJsonObject();
+            JsonObject parsed;
+            try {
+                parsed = new JsonParser().parse(json.toString().replace("\\", "").replace("\"{", "{").replace("}\"", "}"))
+                        .getAsJsonObject();
+            } catch (JsonSyntaxException ex) {
+                parsed = new JsonParser().parse(json.toString()).getAsJsonObject();
+            }
+
             return LocalizedString.fromJson(parsed);
         }
     }

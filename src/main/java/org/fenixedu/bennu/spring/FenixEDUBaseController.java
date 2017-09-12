@@ -1,15 +1,15 @@
 /**
- * This file was created by Quorum Born IT <http://www.qub-it.com/> and its 
- * copyright terms are bind to the legal agreement regulating the FenixEdu@ULisboa 
+ * This file was created by Quorum Born IT <http://www.qub-it.com/> and its
+ * copyright terms are bind to the legal agreement regulating the FenixEdu@ULisboa
  * software development project between Quorum Born IT and Serviços Partilhados da
  * Universidade de Lisboa:
  *  - Copyright © 2015 Quorum Born IT (until any Go-Live phase)
  *  - Copyright © 2015 Universidade de Lisboa (after any Go-Live phase)
  *
  * Contributors: ricardo.pedro@qub-it.com, anil.mamede@qub-it.com
- * 
  *
- * 
+ *
+ *
  * This file is part of FenixEdu Treasury.
  *
  * FenixEdu Treasury is free software: you can redistribute it and/or modify
@@ -55,15 +55,15 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import pt.ist.fenixframework.DomainObject;
-import pt.ist.standards.geographic.Country;
-import pt.ist.standards.geographic.District;
-import pt.ist.standards.geographic.Municipality;
-
 import com.fatboyindustrial.gsonjodatime.Converters;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+
+import pt.ist.fenixframework.DomainObject;
+import pt.ist.standards.geographic.Country;
+import pt.ist.standards.geographic.District;
+import pt.ist.standards.geographic.Municipality;
 
 public class FenixEDUBaseController {
     protected static final String ERROR_MESSAGES = "errorMessages";
@@ -78,27 +78,27 @@ public class FenixEDUBaseController {
     protected HttpServletRequest request;
 
     // The list of INFO messages that can be showed on View
-    protected void addInfoMessage(String message, Model model) {
+    protected void addInfoMessage(final String message, final Model model) {
         ((List<String>) model.asMap().get(INFO_MESSAGES)).add(message);
     }
 
     // The list of WARNING messages that can be showed on View
-    protected void addWarningMessage(String message, Model model) {
+    protected void addWarningMessage(final String message, final Model model) {
         ((List<String>) model.asMap().get(WARNING_MESSAGES)).add(message);
     }
 
     // The list of ERROR messages that can be showed on View
-    protected void addErrorMessage(String message, Model model) {
+    protected void addErrorMessage(final String message, final Model model) {
         ((List<String>) model.asMap().get(ERROR_MESSAGES)).add(message);
     }
 
-    protected void clearMessages(Model model) {
+    protected void clearMessages(final Model model) {
         model.addAttribute(INFO_MESSAGES, new ArrayList<String>());
         model.addAttribute(WARNING_MESSAGES, new ArrayList<String>());
         model.addAttribute(ERROR_MESSAGES, new ArrayList<String>());
     }
 
-    protected String redirect(String destinationAction, Model model, RedirectAttributes redirectAttributes) {
+    protected String redirect(final String destinationAction, final Model model, final RedirectAttributes redirectAttributes) {
         if (model.containsAttribute(INFO_MESSAGES)) {
             redirectAttributes.addFlashAttribute(INFO_MESSAGES, model.asMap().get(INFO_MESSAGES));
         }
@@ -112,13 +112,13 @@ public class FenixEDUBaseController {
         return "redirect:" + destinationAction;
     }
 
-    protected String redirectToReferrer(Model model, RedirectAttributes redirectAttributes) {
+    protected String redirectToReferrer(final Model model, final RedirectAttributes redirectAttributes) {
         String previousURL = request.getHeader("referer");
         return redirect(previousURL, model, redirectAttributes);
     }
 
     @ModelAttribute
-    protected void addModelProperties(Model model, HttpServletRequest request) {
+    protected void addModelProperties(final Model model, final HttpServletRequest request) {
         if (!model.containsAttribute(INFO_MESSAGES)) {
             model.addAttribute(INFO_MESSAGES, new ArrayList<String>());
         }
@@ -141,7 +141,7 @@ public class FenixEDUBaseController {
     }
 
     @InitBinder
-    public void initBinder(WebDataBinder binder) {
+    public void initBinder(final WebDataBinder binder) {
         GenericConversionService conversionService = (GenericConversionService) binder.getConversionService();
         if (!conversionService.canConvert(String.class, IBean.class)) {
             GsonBuilder builder = new GsonBuilder();
@@ -154,7 +154,7 @@ public class FenixEDUBaseController {
 
     }
 
-    protected void registerTypeAdapters(GsonBuilder builder) {
+    protected void registerTypeAdapters(final GsonBuilder builder) {
         builder.registerTypeAdapter(LocalizedString.class, new LocalizedStringAdapter());
         builder.registerTypeAdapter(Country.class, new CountryAdapter());
         builder.registerTypeAdapter(District.class, new DistrictAdapter());
@@ -162,7 +162,7 @@ public class FenixEDUBaseController {
         builder.registerTypeHierarchyAdapter(DomainObject.class, new DomainObjectAdapter());
     }
 
-    protected String getBeanJson(IBean bean) {
+    protected String getBeanJson(final IBean bean) {
         GsonBuilder builder = new GsonBuilder();
         registerTypeAdapters(builder);
         Gson gson = Converters.registerAll(builder).create();
