@@ -17,8 +17,8 @@
     <name>ULisboa FenixEDU tools for FenixEDU Modules and WebApps</name>
 
     <properties>
-        <version.pt.ist.standards>1.1.0-SNAPSHOT</version.pt.ist.standards>
-        <version.org.fenixedu.bennu>6.0.0-FORK</version.org.fenixedu.bennu>
+        <version.pt.ist.standards>1.3.5-FORK</version.pt.ist.standards>
+        <version.org.fenixedu.bennu>6.3.0-FORK</version.org.fenixedu.bennu>
     </properties>
 
     <dependencies>
