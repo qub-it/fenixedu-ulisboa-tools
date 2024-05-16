@@ -1,3 +1,4 @@
+- Refactor: Moves IBean and TupleDataSourceBean to academic extensions [#qubIT-Omnis-5836]
 - New feature: Support for Java 11
 - Improvement: Adds fenixedu OSS DM [#qubIT-Omnis-4736]
 
