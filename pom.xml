@@ -49,7 +49,6 @@
         <dependency>
 				<groupId>org.fenixedu</groupId>
 	<artifactId>fenixedu-academic-extensions</artifactId>
-		<version>4.30.0</version>
 		</dependency>
     </dependencies>
 
