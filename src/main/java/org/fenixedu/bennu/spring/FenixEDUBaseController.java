@@ -30,7 +30,7 @@ package org.fenixedu.bennu.spring;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.fenixedu.bennu.IBean;
 import org.fenixedu.bennu.adapters.CountryAdapter;
@@ -130,7 +130,7 @@ public class FenixEDUBaseController {
         }
 
         //HACK: Forcing the "Messages AS DEFAULT CODE"
-        WebApplicationContext webAppContext = RequestContextUtils.getWebApplicationContext(request);
+        WebApplicationContext webAppContext = RequestContextUtils.findWebApplicationContext(request);
         MessageSource messageSource = (MessageSource) webAppContext.getBean("messageSource");
         if (messageSource != null && messageSource instanceof ReloadableResourceBundleMessageSource) {
             ((ReloadableResourceBundleMessageSource) messageSource).setUseCodeAsDefaultMessage(true);
