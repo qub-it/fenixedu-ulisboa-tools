@@ -1,3 +1,5 @@
+- Refactor: Removing bennu-spring dependency [#qubIT-Fenix-9802]
+
 2.2.0 (17-06-2024)
 - Improvement: Performs release for jdk 17 [#qubIT-Omnis-4737]
 
